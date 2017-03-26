@@ -47,13 +47,13 @@ public class InMemoryTransactionStatisticsManager implements StatisticsManager, 
         boolean added = false;
         if (tx != null) {
             long currentTime = System.currentTimeMillis();
-            if (tx.timestamp < (currentTime - aggregationPeriod)) {
+            if (tx.getTimestamp() < (currentTime - aggregationPeriod)) {
                 // ignore
             } else {
-                long second = ((tx.timestamp / 1000) % 60);
-                long minute = (tx.timestamp / (60 * 1000));
-                long hour = (tx.timestamp / (60 * 60 * 1000)) % (24);
-                System.out.println(" minute: " + minute + ", second: " + second + ", " + tx.timestamp);
+                long second = ((tx.getTimestamp() / 1000) % 60);
+                long minute = (tx.getTimestamp() / (60 * 1000));
+                long hour = (tx.getTimestamp() / (60 * 60 * 1000)) % (24);
+                System.out.println(" minute: " + minute + ", second: " + second + ", " + tx.getTimestamp());
                 Pair<Statistics, Long> existing = null;
                 if (database.containsKey(second)) {
                     existing = database.get(second);
@@ -94,7 +94,7 @@ public class InMemoryTransactionStatisticsManager implements StatisticsManager, 
             long thenTime = k + v.getSecond() * 60;
             System.out.println("Current time: " + currentTime + ", then Time: " + thenTime);
             if (thenTime > (currentTime - 60)) {
-                if (result.count == 0) {
+                if (result.getCount() == 0) {
                     result.set(v.getFirst());
                 } else {
                     result.combine(v.getFirst());

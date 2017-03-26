@@ -17,15 +17,31 @@ public class Transaction {
     /**
      * amount - transaction amount
      */
-    public double amount;
+    private double amount;
 
     /**
      * When the transaction was added
      */
-    public long timestamp;
+    private long timestamp;
 
     public static Transaction fromJson(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, Transaction.class);
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

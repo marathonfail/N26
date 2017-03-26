@@ -16,24 +16,24 @@ public class InMemoryTransactionStatisticsManagerTest {
     public void testAddTransaction() {
         Transaction tx = new Transaction();
         long thisTime = System.currentTimeMillis() - 1000;
-        tx.amount = 10.0;
-        tx.timestamp = thisTime;
+        tx.setAmount(10.0);
+        tx.setTimestamp(thisTime);
         assert (manager.addTransaction(tx));
 
-        tx.timestamp = System.currentTimeMillis() - 6000;
-        tx.amount = 12;
+        tx.setTimestamp(System.currentTimeMillis() - 6000);
+        tx.setAmount(12);
         assert (manager.addTransaction(tx));
 
         Statistics st = manager.getStatistics();
         System.out.println(st);
-        assert (st.count == 2);
-        assert (st.avg == 11.0);
-        assert (st.max == 12.0);
-        assert (st.min == 10.0);
-        assert (st.sum == 22.0);
+        assert (st.getCount() == 2);
+        assert (st.getAvg() == 11.0);
+        assert (st.getMax() == 12.0);
+        assert (st.getMin() == 10.0);
+        assert (st.getSum() == 22.0);
 
-        tx.timestamp = System.currentTimeMillis() - 61000;
-        tx.amount = 12;
+        tx.setTimestamp(System.currentTimeMillis() - 61000);
+        tx.setAmount(12);
         assert (manager.addTransaction(tx) == false);
 
     }
