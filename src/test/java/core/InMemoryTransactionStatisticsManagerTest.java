@@ -36,29 +36,5 @@ public class InMemoryTransactionStatisticsManagerTest {
         tx.amount = 12;
         assert (manager.addTransaction(tx) == false);
 
-        try {
-            Thread.sleep(56000);
-        } catch (Exception e) {
-
-        }
-        st = manager.getStatistics();
-        System.out.println(st);
-        assert (st.count == 1);
-        assert (st.avg == 10.0);
-        assert (st.max == 10.0);
-        assert (st.min == 10.0);
-        assert (st.sum == 10.0);
-
-        tx.amount = 12;
-        tx.timestamp = thisTime;
-        assert (manager.addTransaction(tx));
-        st = manager.getStatistics();
-        System.out.println(st);
-        assert (st.count == 2);
-        assert (st.avg == 11.0);
-        assert (st.max == 12.0);
-        assert (st.min == 10.0);
-        assert (st.sum == 22.0);
-
     }
 }
