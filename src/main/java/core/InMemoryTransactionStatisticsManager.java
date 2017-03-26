@@ -2,6 +2,7 @@ package core;
 
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import utils.Pair;
 
@@ -50,10 +51,9 @@ public class InMemoryTransactionStatisticsManager implements StatisticsManager, 
                 // ignore
             } else {
                 long second = ((tx.timestamp / 1000) % 60);
-                long minute = (tx.timestamp / (60 * 1000)) % (60);
+                long minute = (tx.timestamp / (60 * 1000));
                 long hour = (tx.timestamp / (60 * 60 * 1000)) % (24);
-                System.out.println(" minute: " + minute + ", second: " + second + ", " + "hour: " + hour + ", "
-                        + tx.timestamp);
+                System.out.println(" minute: " + minute + ", second: " + second + ", " + tx.timestamp);
                 Pair<Statistics, Long> existing = null;
                 if (database.containsKey(second)) {
                     existing = database.get(second);
@@ -72,18 +72,35 @@ public class InMemoryTransactionStatisticsManager implements StatisticsManager, 
                     } else {
                         Statistics st = existing.getFirst();
                         st.combine(tx);
+                        existing.setSecond(minute);
                         database.put(second, existing);
                     }
                 }
                 added = true;
             }
+            System.out.println(database);
         }
         return added;
     }
 
     @Override
     public Statistics getStatistics() {
-        return null;
+        long second = ((System.currentTimeMillis() / 1000) % 60);
+        long minute = (System.currentTimeMillis() / (60 * 1000));
+        long currentTime = second + minute * 60;
+        final Statistics result = new Statistics();
+        // Maximum 60 iterations
+        database.forEach((k, v) -> {
+            long thenTime = k + v.getSecond() * 60;
+            System.out.println("Current time: " + currentTime + ", then Time: " + thenTime);
+            if (thenTime > (currentTime - 60)) {
+                if (result.count == 0) {
+                    result.set(v.getFirst());
+                } else {
+                    result.combine(v.getFirst());
+                }
+            }
+        });
+        return result;
     }
-
 }

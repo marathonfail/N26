@@ -1,5 +1,7 @@
 package core;
 
+import com.google.gson.Gson;
+
 /**
  * 
  * @author sridhar
@@ -21,4 +23,9 @@ public class Transaction {
      * When the transaction was added
      */
     public long timestamp;
+
+    public static Transaction fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Transaction.class);
+    }
 }

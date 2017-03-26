@@ -61,4 +61,20 @@ public class Statistics {
         this.min = tx.amount;
         this.max = tx.amount;
     }
+
+    public void set(Statistics st) {
+        this.sum = st.sum;
+        this.count = st.count;
+        this.avg = st.avg;
+        this.max = st.max;
+        this.min = st.min;
+    }
+
+    public void combine(Statistics st) {
+        this.sum += st.sum;
+        this.avg = ((this.avg * this.count) + (st.avg * st.count)) / (this.count + st.count);
+        this.count += st.count;
+        this.max = Math.max(this.max, st.max);
+        this.min = Math.min(this.min, st.min);
+    }
 }
