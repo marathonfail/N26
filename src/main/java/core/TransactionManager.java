@@ -14,6 +14,8 @@ public interface TransactionManager {
      * 
      * @param tx
      *            Transaction to be added
+     * 
+     * @return whether the transaction was added to the database
      */
-    public void addTransaction(Transaction tx);
+    public boolean addTransaction(Transaction tx);
 }
